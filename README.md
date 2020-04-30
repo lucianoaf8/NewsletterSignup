@@ -1,3 +1,3 @@
 # Newsletter Sign Up Page
 
-Created using HTML and JavaScript
+Created using HTML and NodeJS
