@@ -1,4 +1,5 @@
 // jshint esversion: 6
+require("dotenv").config();
 const express = require("express");
 const bodyParser = require("body-parser");
 const request = require("request");
@@ -7,9 +8,11 @@ const https = require("https");
 const app = express();
 
 app.use(express.static("public"));
-app.use(bodyParser.urlencoded({
-    extended: true
-}));
+app.use(
+    bodyParser.urlencoded({
+        extended: true,
+    })
+);
 
 app.get("/", function (req, res) {
     res.sendFile(__dirname + "/signup.html");
@@ -21,14 +24,16 @@ app.post("/", function (req, res) {
     const email = req.body.email;
 
     const data = {
-        members: [{
-            email_address: email,
-            status: "subscribed",
-            merge_fields: {
-                FNAME: firstName,
-                LNAME: lastName,
+        members: [
+            {
+                email_address: email,
+                status: "subscribed",
+                merge_fields: {
+                    FNAME: firstName,
+                    LNAME: lastName,
+                },
             },
-        }, ],
+        ],
     };
 
     const jsonData = JSON.stringify(data);
@@ -37,7 +42,7 @@ app.post("/", function (req, res) {
 
     const options = {
         method: "POST",
-        auth: "hordak:b95df3ff5c95fdd63b3ce086b04fb288-us8",
+        auth: process.env.AUTH,
     };
 
     const request = https.request(url, options, function (response) {
